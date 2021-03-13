@@ -10,12 +10,17 @@ PUSHSHIFT_API_BASE_URL = 'http://api.pushshift.io/reddit/search'
 DATABASE_NAME = 'botternaught'
 COLLECTION_NAME = 'redditors'
 REDDIT = praw.Reddit('botternaught')
+MONGO_CLIENT = MongoClient('localhost', 27017)
 
 def construct_params(user, fields):
     return {
         'author': user,
         'fields': fields
     }
+
+def get_collection():
+    db = MONGO_CLIENT[DATABASE_NAME]
+    return db[COLLECTION_NAME]
 
 def request(retries=5, backoff_factor=1, status_forcelist=(429, 500, 502, 504)):
     session = requests.Session()
@@ -67,6 +72,10 @@ def scrape_account(username, is_bot):
     redditor.submissions = get_submissions_for_account(username)['data']
     return redditor
 
+def add_account_to_db(redditor):
+    collection = get_collection()
+    collection.insert_one(redditor.__dict__)
+
 def get_accounts_from_file(filename):
     f = open(filename, 'r')
     # parse text file (ie. "u/user_name 1094" => "user_name")
@@ -74,17 +83,10 @@ def get_accounts_from_file(filename):
     f.close
     return accounts
 
-def get_db():
-    client = MongoClient('localhost', 27017)
-    return client[DATABASE_NAME]
-
-def get_collection():
-    db = get_db
-    return db[COLLECTION_NAME]
-
 def main():
     bot_accounts = get_accounts_from_file('bot_accounts.txt')
-    print(scrape_account(bot_accounts[-2], True).has_verified_email)
+    redditor = scrape_account(bot_accounts[-2], True)
+    add_account_to_db(redditor)
 
 if __name__ == '__main__':
     main()
