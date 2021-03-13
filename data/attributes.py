@@ -1,8 +1,10 @@
+# Documentation for  what the fields are:
 # https://pushshift.io/api-parameters/
+
 COMMENT_FIELDS = {
-    "author",
     "author_created_utc",
     "body",
+    "created_utc",
     "controversiality",
     "gilded",
     "is_submitter",
@@ -13,9 +15,9 @@ COMMENT_FIELDS = {
 }
 
 SUBMISSION_FIELDS = {
-    "author",
     "title",
     "selftext",
+    "created_utc",
     "num_comments",
     "num_crossposts",
     "score",
