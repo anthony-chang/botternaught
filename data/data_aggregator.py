@@ -1,8 +1,9 @@
-import requests
 import praw
+import requests
 from requests.adapters import HTTPAdapter
 from requests.packages.urllib3.util.retry import Retry
 from pymongo import MongoClient
+
 import attributes
 from redditor import Redditor
 
@@ -66,27 +67,47 @@ def scrape_account(username, is_bot):
         redditor.has_verified_email = user.has_verified_email
         redditor.is_bot = is_bot
     except Exception as e:
-        print('{}, failed to get info for user {}'.format(e, user))
+        print('{}: failed to get info for user {}'.format(e, user))
+        return None
 
     redditor.comments = get_comments_for_account(username)['data']
     redditor.submissions = get_submissions_for_account(username)['data']
     return redditor
 
+def get_accounts_from_file(filename):
+    f = open(filename, 'r')
+    # parse text file (ie. "u/user_name 1094" => "user_name")
+    accounts = [line.split('/', -1)[1].split('\t', -1)[0] for line in f.readlines()]
+    f.close
+    return accounts
+
 def add_account_to_db(redditor):
     collection = get_collection()
     collection.insert_one(redditor.__dict__)
 
-def get_accounts_from_file(filename):
-    f = open(filename, 'r')
-    # parse text file (ie. "u/user_name 1094" => "user_name")
-    accounts = [line.split('/', 1)[1].split('\t')[0] for line in f.readlines()]
-    f.close
-    return accounts
+def scrape_all_accounts():
+    bot_accounts = get_accounts_from_file('bot_accounts.txt')
+    for i, account in enumerate(bot_accounts):
+        redditor = scrape_account(account, is_bot=True)
+        if redditor is not None:
+            print('Successfully scraped user {:<30} | {}/{} bot accounts done.'.format(
+                account,
+                i, len(bot_accounts)
+            ))
+        add_account_to_db(redditor)
+
+    non_bot_accounts = get_accounts_from_file('non_bot_accounts.txt')
+    for i, account in enumerate(non_bot_accounts):
+        redditor = scrape_account(account, is_bot=False)
+        if redditor is not None:
+            print('Successfully scraped user {:<30} | {}/{} bot accounts done.'.format(
+                account,
+                i, len(bot_accounts)
+            ))
+        add_account_to_db(redditor)
 
 def main():
-    bot_accounts = get_accounts_from_file('bot_accounts.txt')
-    redditor = scrape_account(bot_accounts[-2], True)
-    add_account_to_db(redditor)
+    scrape_all_accounts()
 
 if __name__ == '__main__':
     main()
