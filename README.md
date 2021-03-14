@@ -20,7 +20,7 @@ $ cd data
     - script
     - redirect uri: http://localhost:8080
   - Click create app
-- Fill in the information inside the `praw.ini` inside this repository
+- Fill the information inside the `praw.ini` file inside this repository (replace the `placeholder`s)
 ![praw information](https://miro.medium.com/max/875/1*khszOCCaCtqZ6jM19uhpiQ.png)
 - Run data aggregation
 ``` sh
