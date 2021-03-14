@@ -26,3 +26,17 @@ $ cd data
 ``` sh
 $ python data_aggregation.py
 ```
+
+### Clean Mongo Database
+To reset the database (drop `redditors` collection from MongoDB):
+```sh
+$ cd data
+$ python clean.py
+```
+
+
+## Known Issues
+- Some data from Pushshift API seems to be broken
+  - score (for both comments and submissions), num_comments, upvote_ratio, and probably some others are returning incorrect values
+  - the data from PRAW API is correct, so we can switch to that if we need these attributes to be accurate
+    - if we do this, we won't be able to easily alter the attributes in `attributes.py` so we should only do this after we confirm what attributes our model needs
