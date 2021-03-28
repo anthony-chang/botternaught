@@ -76,9 +76,9 @@ def scrape_account(username, is_bot):
 
 def get_accounts_from_file(filename):
     f = open(filename, 'r')
-    # parse text file (ie. "u/user_name 1094" => "user_name")
-    accounts = [line.split('/', -1)[1].split('\t', -1)[0] for line in f.readlines()]
-    f.close
+    # parse text file (ie. "u/user_name" => "user_name")
+    accounts = [line.split('u/')[1].split('\n')[0] for line in f.readlines()]
+    f.close()
     return accounts
 
 def add_account_to_db(redditor):
@@ -92,7 +92,7 @@ def scrape_all_accounts():
         if redditor is not None:
             print('Successfully scraped user {:<30} | {}/{} bot accounts done.'.format(
                 account,
-                i, len(bot_accounts)
+                i + 1, len(bot_accounts)
             ))
         add_account_to_db(redditor)
 
@@ -102,7 +102,7 @@ def scrape_all_accounts():
         if redditor is not None:
             print('Successfully scraped user {:<30} | {}/{} bot accounts done.'.format(
                 account,
-                i, len(bot_accounts)
+                i + 1, len(non_bot_accounts)
             ))
         add_account_to_db(redditor)
 

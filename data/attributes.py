@@ -2,7 +2,6 @@
 # https://pushshift.io/api-parameters/
 
 COMMENT_FIELDS = {
-    "author_created_utc",
     "body",
     "created_utc",
     "controversiality",
