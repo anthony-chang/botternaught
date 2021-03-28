@@ -91,20 +91,18 @@ def scrape_all_accounts():
         redditor = scrape_account(account, is_bot=True)
         if redditor is not None:
             print('Successfully scraped user {:<30} | {}/{} bot accounts done.'.format(
-                account,
-                i + 1, len(bot_accounts)
+                account, i + 1, len(bot_accounts)
             ))
-        add_account_to_db(redditor)
+            add_account_to_db(redditor)
 
     non_bot_accounts = get_accounts_from_file('non_bot_accounts.txt')
     for i, account in enumerate(non_bot_accounts):
         redditor = scrape_account(account, is_bot=False)
         if redditor is not None:
             print('Successfully scraped user {:<30} | {}/{} bot accounts done.'.format(
-                account,
-                i + 1, len(non_bot_accounts)
+                account, i + 1, len(non_bot_accounts)
             ))
-        add_account_to_db(redditor)
+            add_account_to_db(redditor)
 
 def main():
     scrape_all_accounts()

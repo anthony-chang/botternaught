@@ -1,3 +1,5 @@
+# Dataset source: https://www.kaggle.com/colinmorris/reddit-usernames
+
 import pandas as pd
 import sys
 
