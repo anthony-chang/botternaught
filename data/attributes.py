@@ -7,10 +7,13 @@ COMMENT_FIELDS = {
     "controversiality",
     "gilded",
     "is_submitter",
+    "no_follow",
+    "locked",
     "nest_level",
     "reply_delay",
     "score",
-    "subreddit"
+    "subreddit",
+    "total_awards_received"
 }
 
 SUBMISSION_FIELDS = {
