@@ -65,6 +65,10 @@ def scrape_account(username, is_bot):
         redditor.comment_karma = user.comment_karma
         redditor.created_utc = user.created_utc
         redditor.has_verified_email = user.has_verified_email
+        redditor.is_default_icon = True if 'avatar_default' in user.icon_img else False
+        redditor.is_mod = user.is_mod
+        redditor.is_gold = user.is_gold
+
         redditor.is_bot = is_bot
     except Exception as e:
         print('{}: failed to get info for user {}'.format(e, user))
