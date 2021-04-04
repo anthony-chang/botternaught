@@ -133,3 +133,6 @@ dmypy.json
 
 # PRAW
 praw.ini
+
+# Raw data
+*.csv
