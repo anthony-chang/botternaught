@@ -103,7 +103,7 @@ def scrape_all_accounts():
     for i, account in enumerate(non_bot_accounts):
         redditor = scrape_account(account, is_bot=False)
         if redditor is not None:
-            print('Successfully scraped user {:<30} | {}/{} bot accounts done.'.format(
+            print('Successfully scraped user {:<30} | {}/{} non bot accounts done.'.format(
                 account, i + 1, len(non_bot_accounts)
             ))
             add_account_to_db(redditor)
